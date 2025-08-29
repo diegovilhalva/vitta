@@ -1,7 +1,11 @@
 import { useState } from "react"
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6"
 import { FcGoogle } from "react-icons/fc"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
+import { toast } from "sonner"
+import { LuLoaderCircle } from "react-icons/lu";
+import axios from "axios"
+
 
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false)
@@ -10,10 +14,38 @@ const SignUp = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [mobile, setMobile] = useState("")
+    const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
 
-    const handleSumbmit = (e) => {
+
+
+    const handleSumbmit = async (e) => {
         e.preventDefault()
-        console.log(fullName, email, password, role, mobile)
+        if (!fullName || !email || !password || !mobile || !role) {
+            return toast.error("Preencha todos os campos.");
+        }
+
+        try {
+            setLoading(true)
+
+            const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/signup`, { fullName, email, mobile, role, password }, { withCredentials: true })
+            if (res.status === 201) {
+                toast.success(res.data.message)
+                t
+                setFullname("");
+                setEmail("");
+                setPassword("");
+                setMobile("");
+                setRole("user");
+                navigate("/")
+            }
+
+        } catch (error) {
+            toast.error(error.response.data.message)
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -71,7 +103,7 @@ const SignUp = () => {
 
                         </div>
                     </div>
-                    <button type="submit" className="w-full bg-primary text-white hover:bg-hover-default mt-4 flex items-center justify-center gap-2 border-border-default rounded-lg px-4 py-2 transition duration-200 cursor-pointer">Criar conta</button>
+                    <button type="submit" className="w-full bg-primary text-white hover:bg-hover-default mt-4 flex items-center justify-center gap-2 border-border-default rounded-lg px-4 py-2 transition duration-200 cursor-pointer">{loading ? <LuLoaderCircle className="animate-spin" /> : 'Criar conta'}</button>
                 </form>
                 <div className="flex items-center my-4">
                     <hr className="flex-grow border-gray-300" />
