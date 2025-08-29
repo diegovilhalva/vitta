@@ -1,13 +1,17 @@
+import { Route, Routes } from "react-router"
+import SignUp from "./pages/SignUp"
+import SignIn from "./pages/SignIn"
 
 
 
 function App() {
- 
+
 
   return (
-   <div className="bg-black h-screen text-white">
-    Hello World
-   </div>
+    <Routes>
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/signin" element={<SignIn />} />
+    </Routes>
   )
 }
 
