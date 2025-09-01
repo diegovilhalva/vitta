@@ -82,14 +82,24 @@ const SignIn = () => {
               </button>
             </div>
           </div>
-        
+
           <button
             type="submit"
+             disabled={loading}
             className="w-full bg-primary text-white hover:bg-hover-default mt-4 flex items-center justify-center gap-2 border-border-default rounded-lg px-4 py-2 transition duration-200 cursor-pointer"
           >
             {loading ? <LuLoaderCircle className="animate-spin" /> : "Entrar"}
           </button>
         </form>
+        <div className="flex justify-end">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-primary font-medium hover:underline"
+          >
+            Esqueceu a senha?
+          </Link>
+        </div>
+
 
         <div className="flex items-center my-4">
           <hr className="flex-grow border-gray-300" />
