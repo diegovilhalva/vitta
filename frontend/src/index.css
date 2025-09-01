@@ -2,7 +2,7 @@
 
 
 @theme{
-    --color-primary:#ff4d2d;
+    --color-primary:ff4d2d#;
     --color-hover-default:#e64323;
     --color-bg-default:#fff9f6;
     --color-border-default:#ddd;
