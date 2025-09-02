@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router"
 import { toast } from "sonner"
 import { LuLoaderCircle } from "react-icons/lu";
 import axios from "axios"
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import { auth } from "../../firebase"
 
 
 const SignUp = () => {
@@ -31,7 +33,6 @@ const SignUp = () => {
             const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/signup`, { fullName, email, mobile, role, password }, { withCredentials: true })
             if (res.status === 201) {
                 toast.success(res.data.message)
-                t
                 setFullname("");
                 setEmail("");
                 setPassword("");
@@ -45,6 +46,35 @@ const SignUp = () => {
             console.log(error)
         } finally {
             setLoading(false)
+        }
+    }
+
+
+    const handleGoogleAuth = async () => {
+
+
+        try {
+            const provider = new GoogleAuthProvider()
+            const res = await signInWithPopup(auth, provider)
+            const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/google-login`, {
+                fullName: res.user.displayName,
+                email: res.user.email,
+            }, { withCredentials: true })
+            if (response.status === 200) {
+                toast.success(response.data.message)
+                if (response.data.needsProfileCompletion) {
+                    navigate("/complete-profile") // criar essa página
+                } else {
+                    navigate("/") // ou dashboard
+                }
+            }
+            console.log(data)
+
+
+            // todo: criar um setUser usando o redux
+        } catch (error) {
+            console.log(error)
+            toast.error(error.response.data.message)
         }
     }
 
@@ -112,7 +142,7 @@ const SignUp = () => {
                 </div>
 
 
-                <button className="w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-200 hover:bg-gray-100 active:bg-gray-200">
+                <button className="w-full mt-4 flex items-center justify-center gap-2 border rounded-lg px-4 py-2 transition duration-200 border-gray-200 hover:bg-gray-100 active:bg-gray-200" onClick={handleGoogleAuth}>
                     <FcGoogle size={20} />
                     Entrar pelo Google
                 </button>
