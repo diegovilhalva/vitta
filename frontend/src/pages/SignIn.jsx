@@ -51,14 +51,16 @@ const SignIn = () => {
       const res = await signInWithPopup(auth, provider)
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/google-login`, {
         email: res.user.email,
+        fullName: res.user.displayName
       }, { withCredentials: true })
       if (response.status === 200) {
         toast.success(response.data.message)
-      }
-      if (response.data.needsProfileCompletion) {
-        navigate("/complete-profile") // criar essa página
-      } else {
-        navigate("/") // ou dashboard
+        if (response.data.needsProfileCompletion) {
+          navigate("/complete-profile") 
+        } else {
+          navigate("/") 
+
+        }
       }
 
       console.log(response.data)

@@ -167,7 +167,7 @@ export const resetPassword = async (req, res) => {
 export const googleLogin = async (req, res) => {
     try {
         const { email, fullName } = req.body;
-
+        console.log(fullName)
         let user = await User.findOne({ email });
 
         // Se não existir, cria com dados básicos
@@ -201,6 +201,7 @@ export const googleLogin = async (req, res) => {
 
       
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: "Erro no servidor.", error: error.message });
     }
 };
@@ -208,7 +209,7 @@ export const googleLogin = async (req, res) => {
 export const completeProfile = async (req, res) => {
     try {
         const { role, mobile } = req.body;
-        const userId = req.userId; // vem do middleware de autenticação
+        const userId = req.userId; 
         console.log(userId)
         let user = await User.findById(userId);
         if (!user) {

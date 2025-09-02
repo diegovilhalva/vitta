@@ -63,9 +63,9 @@ const SignUp = () => {
             if (response.status === 200) {
                 toast.success(response.data.message)
                 if (response.data.needsProfileCompletion) {
-                    navigate("/complete-profile") // criar essa página
+                    navigate("/complete-profile") 
                 } else {
-                    navigate("/") // ou dashboard
+                    navigate("/")
                 }
             }
             console.log(data)
