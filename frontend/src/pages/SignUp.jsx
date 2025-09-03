@@ -72,10 +72,10 @@ const SignUp = () => {
                     navigate("/")
                 }
             }
-            console.log(data)
+           
 
 
-            // todo: criar um setUser usando o redux
+            
         } catch (error) {
             console.log(error)
             toast.error(error.response.data.message)
