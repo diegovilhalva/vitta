@@ -7,6 +7,8 @@ import { LuLoaderCircle } from "react-icons/lu"
 import axios from "axios"
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { auth } from "../../firebase"
+import { useDispatch } from "react-redux"
+import { setUserData } from "../redux/userSlice"
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -15,6 +17,7 @@ const SignIn = () => {
 
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -33,6 +36,7 @@ const SignIn = () => {
 
       if (res.status === 200) {
         toast.success(res.data.message)
+        dispatch(setUserData(res.data.user))
         setEmail("")
         setPassword("")
         navigate("/") // ou dashboard, depende do fluxo
@@ -55,6 +59,7 @@ const SignIn = () => {
       }, { withCredentials: true })
       if (response.status === 200) {
         toast.success(response.data.message)
+        dispatch(setUserData(response.data.user))
         if (response.data.needsProfileCompletion) {
           navigate("/complete-profile") 
         } else {
