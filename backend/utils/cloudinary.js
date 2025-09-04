@@ -1,22 +1,18 @@
-import { v2 as cloudinary } from "cloudinary";
+import cloudinary from "../config/cloudinary.js";
 import fs from "fs";
 
-
 const uploadOnCloudinary = async (file) => {
-    cloudinary.config({
-        cloud_name: process.env.CLOUDINARY_CLOUDNAME,
-        api_key: process.env.CLOUDINARY_API_KEY,
-        api_secret: process.env.CLOUDINARY_API_SECRET,
+  try {
+    const res = await cloudinary.uploader.upload(file, {
+      folder: "vitta", 
+      resource_type: "auto",
     });
-    try {
-        const res = await cloudinary.uploader.upload(file);
-        fs.unlinkSync(file);
-        return res.secure_url;
-    } catch (error) {
-        fs.unlinkSync(file);
-        console.log(error);
+    fs.unlinkSync(file); 
+    return res.secure_url;
+  } catch (error) {
+    fs.unlinkSync(file);
+    throw error;
+  }
+};
 
-    }
-}
-
-export default uploadOnCloudinary
+export default uploadOnCloudinary;
