@@ -11,7 +11,6 @@ const useGetCity = () => {
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(async (position) => {
-            console.log(position)
             const latitude = position.coords.latitude
             const longitude = position.coords.longitude
             const res = await axios.get( `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&format=json&lang=pt&apiKey=${apiKey}`)
