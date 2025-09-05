@@ -167,17 +167,17 @@ export const resetPassword = async (req, res) => {
 export const googleLogin = async (req, res) => {
     try {
         const { email, fullName } = req.body;
-        console.log(fullName)
+        
         let user = await User.findOne({ email });
 
-        // Se não existir, cria com dados básicos
+       
         if (!user) {
             user = new User({
                 fullName,
                 email,
-                password: null, // sem senha
-                role: null,     // será definido no complete profile
-                mobile: null,   // será definido no complete profile
+                password: null, 
+                role: null,     
+                mobile: null,   
                 provider: "google"
             });
             await user.save();
