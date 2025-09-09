@@ -1,4 +1,5 @@
 import Shop from "../models/shop.model.js"
+import Item from "../models/item.model.js"
 import uploadOnCloudinary from "../utils/cloudinary.js"
 
 export const createShop = async (req, res) => {
@@ -31,7 +32,7 @@ export const createShop = async (req, res) => {
             },
                 { new: true })
         }
-        await shop.populate("shop items")
+        await shop.populate("owner items")
         return res.status(201).json(shop)
 
     } catch (error) {
