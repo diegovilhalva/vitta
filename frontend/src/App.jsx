@@ -11,6 +11,7 @@ import useGetCity from "./hooks/useGetCity"
 import useGetMyShop from "./hooks/useGetMyShop"
 import CreateEditShop from "./pages/CreateEditShop"
 import AddItem from "./pages/AddItem"
+import EditItem from "./pages/EditItem"
 
 
 function App() {
@@ -33,7 +34,8 @@ function App() {
           path="/create-edit-shop"
           element={userData ? <CreateEditShop /> : <Navigate to={"/signin"} />}
         />
-        <Route path="/add-item" element={userData && userData.role === "owner" ? <AddItem />:<Navigate to={"/"} />} />
+        <Route path="/add-item" element={userData && userData.role === "owner" ? <AddItem /> : <Navigate to={"/"} />} />
+        <Route path="/edit-item/:itemId" element={userData && userData.role === "owner" ? <EditItem /> : <Navigate to={"/"} />} />
 
       </Routes>
     </>

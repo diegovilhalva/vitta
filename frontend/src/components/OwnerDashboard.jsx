@@ -3,6 +3,7 @@ import Nav from './Nav'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { FaPen, FaUtensils } from 'react-icons/fa6';
+import OwnerItemCard from './OwnerItemCard';
 
 const OwnerDashboard = () => {
   const { myShopData } = useSelector((state) => state.owner);
@@ -85,7 +86,16 @@ const OwnerDashboard = () => {
               </div>
             </div>
           )}
+          <h3 className='font-semibold text-2xl text-center'> Menu</h3>
 
+
+          {myShopData.items.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-4xl">
+              {myShopData.items.map((item) => (
+                <OwnerItemCard key={item._id} item={item} />
+              ))}
+            </div>
+          )}
 
         </div>
       )}
