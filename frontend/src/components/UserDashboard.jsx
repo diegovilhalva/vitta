@@ -7,6 +7,7 @@ import { LuVegan } from "react-icons/lu"
 import { MdOutlineFastfood, MdLocalDrink } from "react-icons/md";
 import { useSelector } from 'react-redux'
 import ShopCard from './ShopCard';
+import FoodCard from './FoodCard';
 
 const categories = [
     { name: "Doces", icon: <GiWrappedSweet className="text-pink-500 text-2xl" /> },
@@ -29,7 +30,7 @@ const categories = [
 ]
 
 const UserDashboard = () => {
-    const { city, shopsInMyCity } = useSelector((state) => state.user)
+    const { city, shopsInMyCity, itemsInMyCity } = useSelector((state) => state.user)
     const cateScrollRef = useRef();
     const shopScrollRef = useRef();
     const [showLeftButton, setShowLeftButton] = useState(false);
@@ -149,10 +150,12 @@ const UserDashboard = () => {
                 </div>
             </div>
             <div className="w-full max-w-6xl flex flex-col gap-5 items-start p-[10px]">
-                  <h1 className="text-gray-800 text-2xl sm:text-3xl">Pratos em destaque</h1>
-                    <div className="w-full h-auto flex flex-wrap gap-[20px] justify-center">
-                        
-                    </div>
+                <h1 className="text-gray-800 text-2xl sm:text-3xl">Pratos em destaque</h1>
+                <div className="w-full h-auto flex flex-wrap gap-[20px] justify-center">
+                    {itemsInMyCity?.map((item, index) => (
+                        <FoodCard key={index} data={item} />
+                    ))}
+                </div>
             </div>
         </div>
     )
