@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     },
     password: { type: String }, 
     mobile: { type: String, default: null },
-    role: { type: String, enum: ["user", "owner", "deliveryBoy"], default: "user" },
+    role: { type: String, enum: ["user", "owner", "deliveryBoy"], default: "" },
     provider: { type: String, enum: ["local", "google"], default: "local" },
     isProfileComplete: { type: Boolean, default: false },
 

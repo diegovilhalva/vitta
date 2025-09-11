@@ -7,3 +7,7 @@
     --color-bg-default:#fff9f6;
     --color-border-default:#ddd;
 }
+
+@utility no-scrollbar {
+  @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+}
