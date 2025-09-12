@@ -8,10 +8,13 @@ import {
     FaShoppingCart,
 } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../redux/userSlice";
 
 const FoodCard = ({ data }) => {
     const [quantity, setQuantity] = useState(0);
-
+    const dispatch = useDispatch()
+    const { cartItems } = useSelector((state) => state.user)
     const renderStars = (rating) => {
         const stars = [];
         for (let i = 1; i <= 5; i++) {
@@ -30,6 +33,23 @@ const FoodCard = ({ data }) => {
         style: "currency",
         currency: "BRL",
     });
+
+    const handleToCart = () => {
+        if (quantity > 0) {
+            dispatch(addToCart({
+                id: data._id,
+                price: data.price,
+                name:data.name,
+                image: data.image,
+                shop: data.shop,
+                quantity,
+                foodType: data.foodType
+            }))
+        }else{
+            return
+        }
+    }
+    console.log(cartItems)
 
     return (
         <div className="w-full sm:w-[260px] rounded-2xl border border-gray-200 bg-white shadow hover:shadow-lg transition flex flex-col">
@@ -89,11 +109,12 @@ const FoodCard = ({ data }) => {
                     </button>
                 </div>
 
-                <button className="bg-primary text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-hover-default transition">
+                <button className={`${cartItems.some(i => i.id == data._id) ? "bg-gray-700" : "bg-primary"} text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-hover-default transition`} onClick={handleToCart}
+                >
                     <FaShoppingCart size={16} /> Comprar
                 </button>
             </div>
-        </div>
+        </div >
     );
 };
 

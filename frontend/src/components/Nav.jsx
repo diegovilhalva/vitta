@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router'
 const Nav = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
-  const { userData,city } = useSelector((state) => state.user)
+  const { userData,city,cartItems } = useSelector((state) => state.user)
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -105,8 +105,8 @@ const Nav = () => {
           ) : (
             <>
               <div className="relative cursor-pointer">
-                <FiShoppingCart size={22} className="text-primary" />
-                <span className="absolute -right-2 -top-2 text-xs font-bold text-white bg-primary rounded-full px-[6px] py-[1px]">0</span>
+                <FiShoppingCart size={22} className="text-primary" onClick={() => navigate("/cart")} />
+                <span className="absolute -right-2 -top-2 text-xs font-bold text-white bg-primary rounded-full px-[6px] py-[1px]">{cartItems.length}</span>
               </div>
               <button className="hidden md:block px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 transition">
                 Meus pedidos

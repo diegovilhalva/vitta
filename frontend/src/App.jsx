@@ -14,6 +14,7 @@ import AddItem from "./pages/AddItem"
 import EditItem from "./pages/EditItem"
 import useGetShopByCity from "./hooks/useGetShopByCity"
 import useGetItemByCity from "./hooks/useGetItemByCity"
+import CartPage from "./pages/CartPage"
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
   useGetShopByCity()
   useGetItemByCity()
   const { userData } = useSelector(state => state.user)
-
+ 
   return (
     <>
       <Toaster richColors position="top-center" />
@@ -40,7 +41,7 @@ function App() {
         />
         <Route path="/add-item" element={userData && userData.role === "owner" ? <AddItem /> : <Navigate to={"/"} />} />
         <Route path="/edit-item/:itemId" element={userData && userData.role === "owner" ? <EditItem /> : <Navigate to={"/"} />} />
-
+        <Route path="/cart" element={userData && userData.role === "user" ? <CartPage /> : <Navigate to={"/"} />} />
       </Routes>
     </>
   )
