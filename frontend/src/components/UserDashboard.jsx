@@ -133,7 +133,7 @@ const UserDashboard = () => {
                             className="w-full flex overflow-x-auto gap-4 pb-2"
                             ref={shopScrollRef}
                         >
-                            {shopsInMyCity.map((shop) => (
+                            {shopsInMyCity?.map((shop) => (
                                 <ShopCard key={shop._id} shop={shop} />
                             ))}
                         </div>

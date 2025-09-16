@@ -43,7 +43,7 @@ function App() {
         <Route path="/add-item" element={userData && userData.role === "owner" ? <AddItem /> : <Navigate to={"/"} />} />
         <Route path="/edit-item/:itemId" element={userData && userData.role === "owner" ? <EditItem /> : <Navigate to={"/"} />} />
         <Route path="/cart" element={userData && userData.role === "user" ? <CartPage /> : <Navigate to={"/"} />} />
-        <Route path="/checkout" element={userData && userData.role === "user" ? <Checkout /> : <Navigate to={"/"} />} />,
+        <Route path="/checkout" element={userData && userData.role === "user" ? <Checkout /> : <Navigate to={"/"} />} />
       </Routes>
     </>
   )
