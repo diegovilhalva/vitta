@@ -23,7 +23,7 @@ const shopOrderSchema = new mongoose.Schema({
         required: true
     },
     subtotal: Number,
-    shopOrderItems: []
+    shopOrderItems: [orderItemSchema]
 }, { timestamps: true })
 
 

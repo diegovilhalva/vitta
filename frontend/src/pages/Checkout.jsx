@@ -106,7 +106,7 @@ const Checkout = () => {
           </div>
           <div className="rounded-xl border overflow-hidden">
             <div className="h-64 w-full items-center justify-center">
-              <MapContainer className={"w-full h-full"} center={[location?.lat, location?.lon]}
+              <MapContainer className={"w-full h-full"}   center={[location?.lat || -15.8267, location?.lon || -47.9218]}
                 zoom={16}>
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -122,7 +122,7 @@ const Checkout = () => {
           <h2 className="text-lg font-semibold mb-3 text-gray-800">Forma de Pagamento</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-            <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${paymentMethod === "cod" ? "border-primary bg-organge-50 shadow" : "border-gray-200 hover:border-gray-300"}`} onClick={() => setPaymentMethod("cod")}>
+            <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${paymentMethod === "cod" ? "border-primary bg-orange-50 shadow" : "border-gray-200 hover:border-gray-300"}`} onClick={() => setPaymentMethod("cod")}>
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
                 <MdDeliveryDining className="text-green-600 text-xl" />
               </span>
@@ -131,7 +131,7 @@ const Checkout = () => {
                 <p className="text-xs text-gray-500">Pague quando sua encomenda chegar</p>
               </div>
             </div>
-            <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${paymentMethod === "online" ? "border-primary bg-organge-50 shadow" : "border-gray-200 hover:border-gray-300"}`} onClick={() => setPaymentMethod("online")}>
+            <div className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${paymentMethod === "online" ? "border-primary bg-orange-50 shadow" : "border-gray-200 hover:border-gray-300"}`} onClick={() => setPaymentMethod("online")}>
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-purple-100"><FaMobileScreenButton className="text-purple-700 text-lg" /></span>
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-100"><FaCreditCard className="text-blue-700 text-lg" /></span>
               <div>

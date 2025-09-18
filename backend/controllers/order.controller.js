@@ -1,0 +1,63 @@
+import Shop from "../models/shop.model.js";
+
+export const placeOrder = async (req, res) => {
+    try {
+        const { cartItems, address, paymentMethod } = req.body;
+
+        if (!cartItems || cartItems.length === 0) {
+            return res.status(400).json({ message: "O carrinho está vazio" });
+
+        }
+
+        if (!address || !address.text || !address.latitude || !address.longitude) {
+            return res.status(400).json({
+                message: "Por favor,digite seu endereço",
+            })
+
+        }
+
+        const groupedByShop = {}
+
+        cartItems.forEach((item) => {
+            const shopId = item.shop;
+            if (!groupedByShop[shopId]) groupedByShop[shopId] = [];
+            groupedByShop[shopId].push(item);
+        })
+
+
+        const shopOrders = await Promise.all(
+            Object.keys(groupedByShop).map(async (shopId) => {
+                const shop = await Shop.findById(shopId).populate("owner")
+                if (!shop) throw new Error(`Loja não encontrada: ${shopId}`)
+
+                const items = groupedByShop[shopId]
+                const subtotal = items.reduce(
+                    (sum, i) => sum + Number(i.price) * Number(i.quantity),
+                    0
+                )
+                return {
+                    shop: shop._id,
+                    owner: shop.owner._id,
+                    shopOrderItems: items.map((i) => ({
+                        item: i.id,
+                        name: i.name,
+                        price: Number(i.price),
+                        quantity: Number(i.quantity),
+                    })),
+                    subtotal,
+                    status: "pending",
+                }
+
+            })
+
+
+        )
+
+        let totalAmount = shopOrders.reduce((sum, so) => sum + so.subtotal, 0)
+
+
+    } catch (error) {
+
+    }
+
+}
