@@ -9,7 +9,7 @@ import "leaflet/dist/leaflet.css"
 import { setLocation, setMyAddress } from "../redux/mapSlice"
 import axios from "axios"
 import { useEffect, useState } from "react"
-import {toast} from "sonner"
+import { toast } from "sonner"
 
 const RecenterMap = ({ location }) => {
   if (location.lat && location.lon) {
@@ -85,17 +85,29 @@ const Checkout = () => {
 
   const handlePlaceOrder = async () => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/order/place-order`,{
-        paymentMethod,
-        deliveryAddress:{
-          text:addressInput,
-          latitude:location.lat,
-          longitude:location.lon
+      console.log("Evento disparado")
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/order/place-order`,
+        {
+          paymentMethod,
+          deliveryAddress: {
+            text: addressInput,
+            latitude: location.lat,
+            longitude: location.lon,
+          },
+          totalAmount,
+          cartItems,
         },
-        totalAmount,
-        cartItems
-      },{withCredentials:true})
+        { withCredentials: true }
+      )
+
+
+      if (res.status === 201 && paymentMethod === "cod") {
+        navigate("/order-placed");
+      }
+
     } catch (error) {
+      console.log("Erro ao criar pedido:", error.response?.data || error.message)
       console.log(error)
       toast.error("Erro ao fazer pedido")
     }
@@ -125,7 +137,7 @@ const Checkout = () => {
           </div>
           <div className="rounded-xl border overflow-hidden">
             <div className="h-64 w-full items-center justify-center">
-              <MapContainer className={"w-full h-full"}   center={[location?.lat || -15.8267, location?.lon || -47.9218]}
+              <MapContainer className={"w-full h-full"} center={[location?.lat || -15.8267, location?.lon || -47.9218]}
                 zoom={16}>
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -174,18 +186,18 @@ const Checkout = () => {
             <hr className="border-gray-200 my-2" />
             <div className="flex justify-between text-sm text-gray-700">
               <span>Frete</span>
-              <span>{deliveryFee === 0 ? "Grátis": formatadorBRL.format(deliveryFee)}</span>
+              <span>{deliveryFee === 0 ? "Grátis" : formatadorBRL.format(deliveryFee)}</span>
             </div>
-             <div className="flex justify-between text-lg font-bold text-primary pt-2">
-                <span>Total</span>
-                <span>{formatadorBRL.format(total)}</span>
-             </div>
+            <div className="flex justify-between text-lg font-bold text-primary pt-2">
+              <span>Total</span>
+              <span>{formatadorBRL.format(total)}</span>
+            </div>
           </div>
         </section>
-          <button
-          className="w-full bg-primary hover:bg-hover-default text-white py-3 rounded-xl font-semibold">
-            {paymentMethod === "cod" ? "Criar pedido": "Criar pedido e pagar"  }
-          </button>
+        <button
+          className="w-full bg-primary hover:bg-hover-default text-white py-3 rounded-xl font-semibold" onClick={handlePlaceOrder}>
+          {paymentMethod === "cod" ? "Criar pedido" : "Criar pedido e pagar"}
+        </button>
       </div>
     </div>
   )

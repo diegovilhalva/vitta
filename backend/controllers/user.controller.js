@@ -14,6 +14,7 @@ export const getCurrentUser = async (req, res) => {
         return res.status(200).json({user:userData});
     } catch (error) {
         console.log(error)
+    
         res.status(500).json({ message: "Erro no servidor.", error: error.message });
     }
 }

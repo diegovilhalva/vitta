@@ -16,6 +16,7 @@ import useGetShopByCity from "./hooks/useGetShopByCity"
 import useGetItemByCity from "./hooks/useGetItemByCity"
 import CartPage from "./pages/CartPage"
 import Checkout from "./pages/Checkout"
+import OrderPlaced from "./pages/OrderPlaced"
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         <Route path="/edit-item/:itemId" element={userData && userData.role === "owner" ? <EditItem /> : <Navigate to={"/"} />} />
         <Route path="/cart" element={userData && userData.role === "user" ? <CartPage /> : <Navigate to={"/"} />} />
         <Route path="/checkout" element={userData && userData.role === "user" ? <Checkout /> : <Navigate to={"/"} />} />
+        <Route path="/order-placed"  element={userData && userData.role === "user" ? <OrderPlaced /> : <Navigate to={"/"} />} />
       </Routes>
     </>
   )

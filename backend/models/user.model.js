@@ -11,9 +11,7 @@ const userSchema = new mongoose.Schema({
     mobile: { type: String, default: null },
     role: { type: String, enum: ["user", "owner", "deliveryBoy"], default: "" },
     provider: { type: String, enum: ["local", "google"], default: "local" },
-    isProfileComplete: { type: Boolean, default: false },
-
-   
+    isProfileComplete: { type: Boolean, default: false },   
     resetOtp: { type: String },
     isOtpVerified: { type: Boolean, default: false },
     otpExpires: { type: Date },

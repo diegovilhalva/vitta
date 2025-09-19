@@ -1,30 +1,36 @@
 import Shop from "../models/shop.model.js";
 
+import Order from "../models/order.model.js"
+import User from "../models/user.model.js";
+
+
 export const placeOrder = async (req, res) => {
     try {
-        const { cartItems, address, paymentMethod } = req.body;
+       
+        const { cartItems, deliveryAddress, paymentMethod } = req.body
 
         if (!cartItems || cartItems.length === 0) {
-            return res.status(400).json({ message: "O carrinho está vazio" });
-
+            return res.status(400).json({ message: "O carrinho está vazio" })
         }
 
-        if (!address || !address.text || !address.latitude || !address.longitude) {
-            return res.status(400).json({
-                message: "Por favor,digite seu endereço",
-            })
-
+        if (
+            !deliveryAddress ||
+            !deliveryAddress.text ||
+            !deliveryAddress.latitude ||
+            !deliveryAddress.longitude
+        ) {
+            return res.status(400).json({ message: "Por favor, informe seu endereço" })
         }
 
+        // agrupar por loja
         const groupedByShop = {}
-
         cartItems.forEach((item) => {
-            const shopId = item.shop;
-            if (!groupedByShop[shopId]) groupedByShop[shopId] = [];
-            groupedByShop[shopId].push(item);
+            const shopId = item.shop
+            if (!groupedByShop[shopId]) groupedByShop[shopId] = []
+            groupedByShop[shopId].push(item)
         })
 
-
+        // criar subpedidos
         const shopOrders = await Promise.all(
             Object.keys(groupedByShop).map(async (shopId) => {
                 const shop = await Shop.findById(shopId).populate("owner")
@@ -35,6 +41,7 @@ export const placeOrder = async (req, res) => {
                     (sum, i) => sum + Number(i.price) * Number(i.quantity),
                     0
                 )
+
                 return {
                     shop: shop._id,
                     owner: shop.owner._id,
@@ -45,20 +52,26 @@ export const placeOrder = async (req, res) => {
                         quantity: Number(i.quantity),
                     })),
                     subtotal,
-                    status: "pending",
                 }
-
             })
-
-
         )
 
         let totalAmount = shopOrders.reduce((sum, so) => sum + so.subtotal, 0)
 
-        return res.status(201).json({ order: newOrder })
+        const newOrder = new Order({
+            user: req.userId,
+            paymentMethod,
+            deliveryAddress,
+            totalAmount,
+            shopOrder: shopOrders,
+
+        })
+
+        await newOrder.save()
+
+        res.status(201).json({ order: newOrder })
     } catch (error) {
-        console.log(error)
+        console.error(error)
         res.status(500).json({ message: "Erro no servidor.", error: error.message })
     }
-
 }
