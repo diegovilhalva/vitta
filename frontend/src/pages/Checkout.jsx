@@ -9,6 +9,7 @@ import "leaflet/dist/leaflet.css"
 import { setLocation, setMyAddress } from "../redux/mapSlice"
 import axios from "axios"
 import { useEffect, useState } from "react"
+import {toast} from "sonner"
 
 const RecenterMap = ({ location }) => {
   if (location.lat && location.lon) {
@@ -81,6 +82,24 @@ const Checkout = () => {
     currency: "BRL",
   })
 
+
+  const handlePlaceOrder = async () => {
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/order/place-order`,{
+        paymentMethod,
+        deliveryAddress:{
+          text:addressInput,
+          latitude:location.lat,
+          longitude:location.lon
+        },
+        totalAmount,
+        cartItems
+      },{withCredentials:true})
+    } catch (error) {
+      console.log(error)
+      toast.error("Erro ao fazer pedido")
+    }
+  }
 
 
   return (

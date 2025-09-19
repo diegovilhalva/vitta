@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.route.js"
 import userRoutes from "./routes/user.route.js"
 import shopRoutes from "./routes/shop.route.js"
 import itemRoutes from "./routes/item.route.js"
+import orderRoutes from './routes/order.route.js'
 import { connectDB } from "./config/db.js"
 
 const PORT  = process.env.PORT || 4000
@@ -27,6 +28,7 @@ app.use("/api/auth",authRoutes)
 app.use("/api/user",userRoutes)
 app.use("/api/shop",shopRoutes)
 app.use("/api/item",itemRoutes)
+app.use("/api/order",orderRoutes)
 
 app.listen(PORT,() => {
     console.log(`Servidor rodando na porta ${PORT}`)

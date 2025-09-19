@@ -55,9 +55,10 @@ export const placeOrder = async (req, res) => {
 
         let totalAmount = shopOrders.reduce((sum, so) => sum + so.subtotal, 0)
 
-
+        return res.status(201).json({ order: newOrder })
     } catch (error) {
-
+        console.log(error)
+        res.status(500).json({ message: "Erro no servidor.", error: error.message })
     }
 
 }
